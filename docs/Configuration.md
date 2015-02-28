@@ -30,6 +30,7 @@
   - [`"spool max bytes"`](#spool-max-bytes)
   - [`"spool size"`](#spool-size)
   - [`"spool timeout"`](#spool-timeout)
+  - [`"fields"`](#fields)
 - [`"network"`](#network)
   - [`"curve server key"`](#curve-server-key)
   - [`"curve public key"`](#curve-public-key)

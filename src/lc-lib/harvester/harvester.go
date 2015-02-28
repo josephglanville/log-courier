@@ -279,6 +279,9 @@ func (h *Harvester) eventCallback(start_offset int64, end_offset int64, text str
 	for k := range h.stream_config.Fields {
 		event[k] = h.stream_config.Fields[k]
 	}
+	for k := range h.config.General.Fields {
+		event[k] = h.config.General.Fields[k]
+	}
 
 	// If we split any of the line data, tag it
 	if h.split {

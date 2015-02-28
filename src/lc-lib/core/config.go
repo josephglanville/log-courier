@@ -68,20 +68,21 @@ type Config struct {
 }
 
 type GeneralConfig struct {
-	AdminEnabled     bool          `config:"admin enabled"`
-	AdminBind        string        `config:"admin listen address"`
-	PersistDir       string        `config:"persist directory"`
-	ProspectInterval time.Duration `config:"prospect interval"`
-	SpoolSize        int64         `config:"spool size"`
-	SpoolMaxBytes    int64         `config:"spool max bytes"`
-	SpoolTimeout     time.Duration `config:"spool timeout"`
-	LineBufferBytes  int64         `config:"line buffer bytes"`
-	MaxLineBytes     int64         `config:"max line bytes"`
-	LogLevel         logging.Level `config:"log level"`
-	LogStdout        bool          `config:"log stdout"`
-	LogSyslog        bool          `config:"log syslog"`
-	LogFile          string        `config:"log file"`
-	Host             string        `config:"host"`
+	AdminEnabled     bool                   `config:"admin enabled"`
+	AdminBind        string                 `config:"admin listen address"`
+	PersistDir       string                 `config:"persist directory"`
+	ProspectInterval time.Duration          `config:"prospect interval"`
+	SpoolSize        int64                  `config:"spool size"`
+	SpoolMaxBytes    int64                  `config:"spool max bytes"`
+	SpoolTimeout     time.Duration          `config:"spool timeout"`
+	LineBufferBytes  int64                  `config:"line buffer bytes"`
+	MaxLineBytes     int64                  `config:"max line bytes"`
+	LogLevel         logging.Level          `config:"log level"`
+	LogStdout        bool                   `config:"log stdout"`
+	LogSyslog        bool                   `config:"log syslog"`
+	LogFile          string                 `config:"log file"`
+	Host             string                 `config:"host"`
+	Fields           map[string]interface{} `config:"fields"`
 }
 
 type NetworkConfig struct {
@@ -228,7 +229,7 @@ func (c *Config) parseSyntaxError(js []byte, err error) error {
 		return err
 	}
 
-	start := bytes.LastIndex(js[:json_err.Offset], []byte("\n"))+1
+	start := bytes.LastIndex(js[:json_err.Offset], []byte("\n")) + 1
 	end := bytes.Index(js[start:], []byte("\n"))
 	if end >= 0 {
 		end += start
@@ -236,7 +237,7 @@ func (c *Config) parseSyntaxError(js []byte, err error) error {
 		end = len(js)
 	}
 
-	line, pos := bytes.Count(js[:start], []byte("\n")), int(json_err.Offset) - start - 1
+	line, pos := bytes.Count(js[:start], []byte("\n")), int(json_err.Offset)-start-1
 
 	return fmt.Errorf("%s on line %d\n%s\n%s^", err, line, js[start:end], strings.Repeat(" ", pos))
 }
